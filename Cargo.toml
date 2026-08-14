@@ -21,6 +21,7 @@ path = "src/main.rs"
 actix-web = "4.14.0"
 chrono = { version = "0.4.45", default-features = false, features = ["clock"] }
 config = "0.15.25"
+secrecy = { version = "0.8", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 tracing = { version = "0.1.44", features = ["log"] }
