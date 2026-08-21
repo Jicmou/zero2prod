@@ -48,10 +48,14 @@ features = [
   "migrate",
 ]
 
+[dependencies.reqwest]
+version = "0.12"
+default-features = false
+features = ["json", "rustls-tls"]
+
 [dev-dependencies]
 claims = "0.8.0"
 fake = "5.1.0"
 quickcheck = "1.1.0"
 quickcheck_macros = "1.2.0"
 rand = "0.10.2"
-reqwest = "0.13.4"

@@ -5,3 +5,6 @@ database:
   password: "password"
   port: 5432
   username: "postgres"
+email_client:
+  base_url: "https://api.postmarkapp.com"
+  sender_email: "jean-christophe.maigrot@zenika.com"
