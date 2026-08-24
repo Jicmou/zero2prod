@@ -69,16 +69,16 @@ struct SendEmailRequest<'a> {
 mod tests {
     use claims::{assert_err, assert_ok};
     use fake::{
+        Fake, Faker,
         faker::{
             internet::en::SafeEmail,
             lorem::en::{Paragraph, Sentence},
         },
-        Fake, Faker,
     };
     use secrecy::Secret;
     use wiremock::{
-        matchers::{any, header, header_exists, method, path},
         Match, Mock, MockServer, Request, ResponseTemplate,
+        matchers::{any, header, header_exists, method, path},
     };
 
     use crate::{domain::SubscriberEmail, email_client::EmailClient};
