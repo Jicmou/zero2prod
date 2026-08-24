@@ -9,3 +9,4 @@ email_client:
   base_url: "https://api.postmarkapp.com"
   sender_email: "jean-christophe.maigrot@zenika.com"
   authorization_token: "my-secret-token"
+  timeout_milliseconds: 10000
