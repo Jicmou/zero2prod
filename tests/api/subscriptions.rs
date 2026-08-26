@@ -3,7 +3,7 @@ use crate::helpers::spawn_app;
 #[tokio::test]
 async fn subscribe_returns_a_200_for_valid_form_data() {
     // Arrange
-    let test_app = spawn_app().await;
+    let test_app = spawn_app().await.unwrap();
     let client = reqwest::Client::new();
 
     // Act
@@ -31,7 +31,7 @@ async fn subscribe_returns_a_200_for_valid_form_data() {
 #[tokio::test]
 async fn subscribe_returns_a_400_when_data_is_missing() {
     // Arrange
-    let app_address = spawn_app().await.address;
+    let app_address = spawn_app().await.unwrap().address;
     let client = reqwest::Client::new();
     let test_cases = vec![
         ("name=le%guin", "missing the email"),
@@ -62,7 +62,7 @@ async fn subscribe_returns_a_400_when_data_is_missing() {
 #[tokio::test]
 async fn subscribe_returns_a_400_when_fields_are_present_but_empty() {
     // Arrange
-    let app = spawn_app().await;
+    let app = spawn_app().await.unwrap();
     let client = reqwest::Client::new();
     let test_cases = vec![
         ("name=&email=ursula_le_guin%40gmail.com", "empty name"),

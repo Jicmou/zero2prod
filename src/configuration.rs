@@ -1,8 +1,9 @@
 use secrecy::{ExposeSecret, Secret};
+use sqlx::postgres::PgConnectOptions;
 
 use crate::domain::SubscriberEmail;
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 pub struct Settings {
     pub database: DatabaseSettings,
     pub application_port: u16,
@@ -29,9 +30,18 @@ impl DatabaseSettings {
             self.database_name
         ))
     }
+
+    pub fn connect_options(&self) -> PgConnectOptions {
+        PgConnectOptions::new()
+            .port(self.port)
+            .host(&self.host)
+            .username(&self.username)
+            .password(self.password.expose_secret())
+            .database(&self.database_name)
+    }
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 pub struct EmailClientSettings {
     pub base_url: String,
     pub sender_email: String,
