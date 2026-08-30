@@ -6,8 +6,14 @@ use crate::domain::SubscriberEmail;
 #[derive(serde::Deserialize, Clone)]
 pub struct Settings {
     pub database: DatabaseSettings,
-    pub application_port: u16,
+    pub application: ApplicationSettings,
     pub email_client: EmailClientSettings,
+}
+
+#[derive(serde::Deserialize, Clone)]
+pub struct ApplicationSettings {
+    pub port: u16,
+    pub base_url: String,
 }
 
 #[derive(serde::Deserialize, Clone)]
