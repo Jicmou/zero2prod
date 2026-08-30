@@ -3,6 +3,7 @@ use secrecy::{ExposeSecret, Secret};
 
 use crate::domain::SubscriberEmail;
 
+#[derive(Debug)]
 pub struct EmailClient {
     http_client: Client,
     base_url: String,
@@ -69,16 +70,16 @@ struct SendEmailRequest<'a> {
 mod tests {
     use claims::{assert_err, assert_ok};
     use fake::{
-        Fake, Faker,
         faker::{
             internet::en::SafeEmail,
             lorem::en::{Paragraph, Sentence},
         },
+        Fake, Faker,
     };
     use secrecy::Secret;
     use wiremock::{
-        Match, Mock, MockServer, Request, ResponseTemplate,
         matchers::{any, header, header_exists, method, path},
+        Match, Mock, MockServer, Request, ResponseTemplate,
     };
 
     use crate::{domain::SubscriberEmail, email_client::EmailClient};
