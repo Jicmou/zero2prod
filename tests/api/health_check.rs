@@ -3,7 +3,7 @@ use crate::helpers::spawn_app;
 #[tokio::test]
 async fn health_check_works() {
     // Arrange
-    let address = spawn_app().await.unwrap().address;
+    let address = spawn_app().await.address;
 
     let client = reqwest::Client::new();
 

@@ -5,7 +5,7 @@ use wiremock::{Mock, ResponseTemplate};
 #[tokio::test]
 async fn subscribe_returns_a_200_for_valid_form_data() {
     // Arrange
-    let test_app = spawn_app().await.unwrap();
+    let test_app = spawn_app().await;
 
     Mock::given(path("/email"))
         .and(method("POST"))
@@ -25,7 +25,7 @@ async fn subscribe_returns_a_200_for_valid_form_data() {
 #[tokio::test]
 async fn subscribe_persists_the_new_subscriber() {
     // Arrange
-    let test_app = spawn_app().await.unwrap();
+    let test_app = spawn_app().await;
 
     Mock::given(path("/email"))
         .and(method("POST"))
@@ -51,7 +51,7 @@ async fn subscribe_persists_the_new_subscriber() {
 #[tokio::test]
 async fn subscribe_returns_a_400_when_data_is_missing() {
     // Arrange
-    let test_app = spawn_app().await.unwrap();
+    let test_app = spawn_app().await;
     let test_cases = vec![
         ("name=le%guin", "missing the email"),
         ("email=ursula_le_guin%40gmail.com", "missing the name"),
@@ -75,7 +75,7 @@ async fn subscribe_returns_a_400_when_data_is_missing() {
 #[tokio::test]
 async fn subscribe_returns_a_400_when_fields_are_present_but_empty() {
     // Arrange
-    let app = spawn_app().await.unwrap();
+    let app = spawn_app().await;
     let test_cases = vec![
         ("name=&email=ursula_le_guin%40gmail.com", "empty name"),
         ("name=Ursula&email=", "empty email"),
@@ -99,7 +99,7 @@ async fn subscribe_returns_a_400_when_fields_are_present_but_empty() {
 #[tokio::test]
 async fn subscribe_sends_a_confirmation_email_for_valid_data() {
     // Arrange
-    let app = spawn_app().await.unwrap();
+    let app = spawn_app().await;
     let body = "name=le%20guin&email=ursula_le_guin%40gmail.com";
 
     Mock::given(path("/email"))
@@ -119,7 +119,7 @@ async fn subscribe_sends_a_confirmation_email_for_valid_data() {
 #[tokio::test]
 async fn subscribe_sends_a_confirmation_email_with_a_link() {
     // Arrange
-    let app = spawn_app().await.unwrap();
+    let app = spawn_app().await;
     let body = "name=le%20guin&email=ursula_le_guin%40gmail.com";
 
     Mock::given(path("/email"))

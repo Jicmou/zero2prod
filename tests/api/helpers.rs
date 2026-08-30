@@ -3,8 +3,8 @@ use sqlx::{Connection, Executor, PgConnection, PgPool};
 use std::sync::LazyLock;
 use uuid::Uuid;
 use wiremock::MockServer;
-use zero2prod::configuration::{DatabaseSettings, get_configuration};
-use zero2prod::startup::{Application, get_connection_pool};
+use zero2prod::configuration::{get_configuration, DatabaseSettings};
+use zero2prod::startup::{get_connection_pool, Application};
 use zero2prod::telemetry::{get_subscriber, init_subscriber};
 
 static TRACING: LazyLock<()> = LazyLock::new(|| {
@@ -72,7 +72,7 @@ async fn configure_database(config: &DatabaseSettings) -> PgPool {
     connection_pool
 }
 
-pub async fn spawn_app() -> Result<TestApp, std::io::Error> {
+pub async fn spawn_app() -> TestApp {
     LazyLock::force(&TRACING);
 
     let email_server = MockServer::start().await;
@@ -87,15 +87,17 @@ pub async fn spawn_app() -> Result<TestApp, std::io::Error> {
 
     configure_database(&configuration.database).await;
 
-    let application = Application::build(configuration.clone()).await?;
+    let application = Application::build(configuration.clone())
+        .await
+        .expect("failed to build application");
 
     let address = format!("http://127.0.0.1:{}", application.port());
 
     let _ = tokio::spawn(application.run_until_stopped());
 
-    Ok(TestApp {
+    TestApp {
         address,
         db_pool: get_connection_pool(&configuration.database),
         email_server,
-    })
+    }
 }
